@@ -2,3 +2,6 @@
 
 - 2018.5 ~ 2018.6
 - 파이썬 강의
+-- numpy
+-- matplolib
+-- scikit-learn
