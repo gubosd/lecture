@@ -1,0 +1,161 @@
+========== 설치 =================
+
+https://www.virtualbox.org/wiki/Downloads
+버추어박스 다운로드
+
+바탕화면\성남빅데이터교육\VirtualBox-5.2.10-122406-Win.exe 다운로드 및 설치
+
+https://hortonassets.s3.amazonaws.com/2.1/virtualbox/Hortonworks_Sandbox_2.1.ova
+에서 호튼웍스 다운로드 (2.6G)
+Hortonworks_Sandbox_2.1.ova
+
+CPU 2개
+메모리 5G
+
+labs.zip
+DataAnalyst_Lab.pdf
+다운로드
+
+테라텀으로 접속
+ssh 127.0.0.1/2222
+root/hadoop
+* 강의에서는 mobaxterm 사용
+
+File => SSH SCP => labs.zip (PC) 을 /root/labs.zip (샌드박스) 으로 전송
+
+mkdir labs
+mv labs.zip labs
+cd labs
+unzip labs
+cd demos
+
+=========== hadoop 과 hdfs 명령 =========
+
+DataAnalyst_Lab.pdf 참조하여 아래 실행
+
+[root@sandbox demos]# hadoop fs -D dfs.block.size=30 -put stocks.csv stocks.csv
+put: Specified block size is less than configured minimum value (dfs.namenode.fs-limits.min-block-size): 30 < 1048576
+[root@sandbox demos]# hadoop fs -ls
+[root@sandbox demos]# hadoop fs -D dfs.block.size=2000000 -put stocks.csv stocks.csv
+put: io.bytes.per.checksum(512) and blockSize(2000000) do not match. blockSize should be a multiple of io.bytes.per.checksum
+[root@sandbox demos]# hadoop fs -D dfs.block.size=1048576 -put stocks.csv stocks.csv
+
+[root@sandbox demos]# hadoop fs -ls
+Found 1 items
+-rw-r--r--   1 root root    3613198 2018-05-09 23:46 stocks.csv
+
+[root@sandbox demos]# hadoop fs -ls /
+Found 6 items
+drwxrwxrwx   - yarn   hadoop          0 2014-04-21 07:21 /app-logs
+drwxr-xr-x   - hdfs   hdfs            0 2014-04-21 07:23 /apps
+drwxr-xr-x   - mapred hdfs            0 2014-04-21 07:16 /mapred
+drwxr-xr-x   - hdfs   hdfs            0 2014-04-21 07:16 /mr-history
+drwxrwxrwx   - hdfs   hdfs            0 2014-04-22 07:21 /tmp
+drwxr-xr-x   - hdfs   hdfs            0 2014-04-22 07:21 /user
+
+[root@sandbox demos]# hadoop fs -ls /
+Found 6 items
+drwxrwxrwx   - yarn   hadoop          0 2014-04-21 07:21 /app-logs
+drwxr-xr-x   - hdfs   hdfs            0 2014-04-21 07:23 /apps
+drwxr-xr-x   - mapred hdfs            0 2014-04-21 07:16 /mapred
+drwxr-xr-x   - hdfs   hdfs            0 2014-04-21 07:16 /mr-history
+drwxrwxrwx   - hdfs   hdfs            0 2014-04-22 07:21 /tmp
+drwxr-xr-x   - hdfs   hdfs            0 2014-04-22 07:21 /user
+[root@sandbox demos]# hadoop fs -ls /user
+Found 7 items
+drwxrwx---   - ambari-qa hdfs           0 2014-04-21 07:26 /user/ambari-qa
+drwxr-xr-x   - guest     guest          0 2014-04-22 07:21 /user/guest
+drwxr-xr-x   - hcat      hdfs           0 2014-04-21 07:23 /user/hcat
+drwx------   - hive      hdfs           0 2014-04-21 07:17 /user/hive
+drwxr-xr-x   - hue       hue            0 2014-04-22 07:21 /user/hue
+drwxrwxr-x   - oozie     hdfs           0 2014-04-21 07:18 /user/oozie
+drwxr-xr-x   - root      root           0 2018-05-09 23:46 /user/root
+[root@sandbox demos]# hadoop fs -ls /user/root
+Found 1 items
+-rw-r--r--   1 root root    3613198 2018-05-09 23:46 /user/root/stocks.csv
+
+디폴트 디렉토리 => /user/root/
+
+[root@sandbox demos]# hdfs fsck /user/root/stocks.csv
+Connecting to namenode via http://sandbox.hortonworks.com:50070
+FSCK started by root (auth:SIMPLE) from /10.0.2.15 for path /user/root/stocks.csv at Wed May 09 23:56:33 PDT 2018
+.Status: HEALTHY
+ Total size:    3613198 B
+ Total dirs:    0
+ Total files:   1
+ Total symlinks:                0
+ Total blocks (validated):      4 (avg. block size 903299 B)
+ Minimally replicated blocks:   4 (100.0 %)
+ Over-replicated blocks:        0 (0.0 %)
+ Under-replicated blocks:       0 (0.0 %)
+ Mis-replicated blocks:         0 (0.0 %)
+ Default replication factor:    1
+ Average block replication:     1.0
+ Corrupt blocks:                0
+ Missing replicas:              0 (0.0 %)
+ Number of data-nodes:          1
+ Number of racks:               1
+FSCK ended at Wed May 09 23:56:33 PDT 2018 in 5 milliseconds
+
+
+The filesystem under path '/user/root/stocks.csv' is HEALTHY
+
+====== PIG =============
+
+[root@sandbox demos]# pig
+2018-05-10 00:20:42,226 [main] INFO  org.apache.pig.Main - Apache Pig version 0.12.1.2.1.1.0-385 (rexported) compiled Apr 16 2014, 15:59:00
+2018-05-10 00:20:42,227 [main] INFO  org.apache.pig.Main - Logging error messages to: /root/labs/demos/pig_1525936842225.log
+2018-05-10 00:20:42,255 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /root/.pigbootup not found
+2018-05-10 00:20:42,685 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2018-05-10 00:20:42,686 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+2018-05-10 00:20:42,686 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://sandbox.hortonworks.com:8020
+2018-05-10 00:20:43,604 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+grunt> ls # 하둡 명령
+hdfs://sandbox.hortonworks.com:8020/user/root/stocks.csv<r 1>   3613198
+grunt> sh pwd # 로컬 명령
+/root/labs/demos
+grunt> sh ls # 로컬 명령
+bucketdemo.sql
+constitution.txt
+core-site.xml
+...
+grunt> pwd
+hdfs://sandbox.hortonworks.com:8020/user/root
+
+grunt> sh pwd
+/root/labs/demos
+grunt> mkdir demos
+grunt> copyFromLocal pigdemo.txt demos/
+grunt> ls demos
+hdfs://sandbox.hortonworks.com:8020/user/root/demos/pigdemo.txt<r 1>    80
+grunt> cd demos
+grunt> pwd
+hdfs://sandbox.hortonworks.com:8020/user/root/demos
+
+grunt> cat pigdemo.txt
+SD      Rich
+NV      Barry
+CO      George
+CA      Ulf
+IL      Danielle
+OH      Tom
+CA      manish
+CA      Brian
+CO      Mark
+grunt> employees = LOAD 'pigdemo.txt' AS (state,name); # default delimiter is '\t'
+   # = 앞뒤로 공백을 넣어야 함
+2018-05-10 01:18:34,433 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+grunt> describe employees;
+employees: {state: bytearray,name: bytearray}
+
+grunt> dump employees;
+...
+(SD,Rich)
+(NV,Barry)
+(CO,George)
+(CA,Ulf)
+(IL,Danielle)
+(OH,Tom)
+(CA,manish)
+(CA,Brian)
+(CO,Mark)
