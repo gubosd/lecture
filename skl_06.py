@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 columns=["sepal.length","sepal.width","petal.length","petal.width"]
 name={'Setosa':0, 'Versicolor':1, 'Virginica':2}
 
-data=np.loadtxt('iris.csv', delimiter=',', skiprows=1, converters={4: lambda x: name[x.strip('"')]}, encoding='utf-8')
+data=np.loadtxt('iris.csv', delimiter=',', skiprows=1, converters={4: lambda x: name[x.decode().strip('"')]})
 
 # data for machine-learning
 
