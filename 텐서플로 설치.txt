@@ -1,4 +1,4 @@
-<텐서플로 설치>
+﻿<텐서플로 설치>
 
 1. 파이썬 확인 (아나콘다 아님)
 
@@ -24,3 +24,7 @@ ImportError: Could not find 'msvcp140.dll'. TensorFlow requires that this DLL be
 다운받은 'vc_redist.x64.exe' 실행
 
 5. 3번처럼 텐서플로 다시 임포트
+
+6. matplotlib 설치
+
+콘솔에서 'pip install matplotlib' 실행
