@@ -1,0 +1,26 @@
+<텐서플로 설치>
+
+1. 파이썬 확인 (아나콘다 아님)
+
+콘솔에서 'echo %PATH%' 로 경로 확인
+'python' 명령으로 파이썬 동작 확인
+
+2. 텐서플로 설치
+
+콘솔에서 'pip install tensorflow' 실행
+
+3. 텐서플로 실행
+
+콘솔에서 'python' 으로 파이썬 명령창으로 진입
+'>>> import tensorflow as tf' 실행
+
+ImportError: Could not find 'msvcp140.dll'. TensorFlow requires that this DLL be installed in a directory that is named in your %PATH% environment variable. You may install this DLL by downloading Visual C++ 2015 Redistributable Update 3 from this URL: https://www.microsoft.com/en-us/download/details.aspx?id=53587
+
+에러 발생됨
+
+4. 윈도우 라이브러리 설치
+
+'https://www.microsoft.com/en-us/download/details.aspx?id=53587' 에서 아래 파일 다운로드
+다운받은 'vc_redist.x64.exe' 실행
+
+5. 3번처럼 텐서플로 다시 임포트
